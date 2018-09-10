@@ -18,19 +18,25 @@ class Api::V1::TwerpsController < ApplicationController
 
   
   def create
+    vtwerp=params["twerp"]
+    if vtwerp.length > 1 && vtwerp.length < 281
     @twerp = Twerp.create(
         twerp: params["twerp"],
         numfavs: params["numfavs"],
         user_id: @user.id
         )
       render json: @twerp
+    else
+      render json: { error: "Invalid twerp" }, status: :unauthorized
   end
+ end
+
 
   def update
     if @twerp.update(twerp_params)
       render json: @twerp
     else
-      render json: @twerp.errors, status: :unprocessable_entity
+      render json: { error: "Invalid Update" }, status: :unauthorized
     end
   end
   
