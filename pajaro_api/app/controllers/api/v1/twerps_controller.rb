@@ -41,17 +41,13 @@ class Api::V1::TwerpsController < ApplicationController
   end
   
   def destroy
-    byebug
-    if current_user == @user
+    if @current_user.id == @user.id
       @twerp.destroy 
+    else 
+      render json: { error: "Invalid Action" }, status: :unauthorized
     end
   end
 
-  protected 
-  def current_user
-    return unless session[:user_id]
-    @current_user ||= User.find(session[:user_id])
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
